@@ -15,7 +15,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   'use strict';
 
   // FIXME: Hack for Node.js
-  if(!unescape) {
+  if(!window || !window.unescape) {
     var unescape = require("querystring").unescape;
   }
 
@@ -262,7 +262,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     // case Lo-Dash was injected by a third-party script and not intended to be
     // loaded as a module. The global assignment can be reverted in the Lo-Dash
     // module via its `noConflict()` method.
-    window.B = Buffer;
+    window.Buffer = Buffer;
 
     // define as an anonymous module so, through path mapping, it can be
     // referenced as the "underscore" module
@@ -283,6 +283,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   }
   else {
     // in a browser or Rhino
-    window.B = Buffer;
+    window.Buffer = Buffer;
   }
 }(this));
