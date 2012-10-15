@@ -1,6 +1,6 @@
-# MathJS
+# BufferJS
 
-[![Build Status](https://secure.travis-ci.org/gladiusjs/mathjs.png?branch=develop)](http://travis-ci.org/gladiusjs/mathjs)
+[![Build Status](https://secure.travis-ci.org/gladiusjs/bufferjs.png?branch=develop)](http://travis-ci.org/gladiusjs/bufferjs)
 
 BufferJS provides a portable binary buffer implementation for JavaScript environments that support typed arrays. It's designed to be useful in high-performance computing or low-level programming applications. It's also compatible with Node.js buffers.
 
