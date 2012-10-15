@@ -158,7 +158,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     } else {
       source = this.__buffer__;
     }
-    console.log(source);
     targetBuffer.__buffer__.set(source, optTargetStart);
   };
   Buffer.prototype.slice = function slice(optStart, optEnd) {
