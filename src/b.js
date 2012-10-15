@@ -90,18 +90,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   BufferOverflowError.prototype.constructor = BufferOverflowError;
 
   function Buffer(arg, optArg) {
-    this.__buffer__ = undefined;
+    this.__bytes__ = undefined;
     if(Array.isArray(arg) || isTypedArray(arg)) {
-      this.__buffer__ = new Uint8Array(arg);
+      this.__bytes__ = new Uint8Array(arg);
     } else if("string" === typeof arg) {
       // FIXME: support other encodings   
-      this.__buffer__ = new Uint8Array(Buffer.byteLength(arg));      
+      this.__bytes__ = new Uint8Array(Buffer.byteLength(arg));      
       this.write(arg);
     } else if("number" === typeof arg) {
-      this.__buffer__ = new Uint8Array(arg);
+      this.__bytes__ = new Uint8Array(arg);
     } else {
       // Do nothing!
     }
+    this.__dataview__ = new DataView(this.__bytes__.buffer);
   }
   Buffer.isBuffer = function isBuffer(object) {
     return object instanceof Buffer;
@@ -128,118 +129,168 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     return target;
   };
   Buffer.prototype.length = function length() {
-    return this.__buffer__.length;
+    return this.__bytes__.length;
+  };
+  Buffer.prototype.bytes = function bytes() {
+    return this.__bytes;
   };
   Buffer.prototype.write = function write(string, optOffset, optLength, optEncoding) {
     // FIXME: support other encodings
     optOffset = (undefined === optOffset) ? 0 : optOffset;
     optLength = (undefined === optLength) ? Buffer.byteLength(string) : optLength;
-    stringToUtf8ByteArray(string, optOffset, optLength, this.__buffer__);
+    stringToUtf8ByteArray(string, optOffset, optLength, this.__bytes__);
   };
   Buffer.prototype.toString = function toString(optEncoding, optStart, optEnd) {
     // FIXME: support other encodings
     optStart = (undefined === optStart) ? 0 : optStart;
-    optEnd = (undefined === optEnd) ? this.__buffer__.length : optEnd;      
+    optEnd = (undefined === optEnd) ? this.__bytes__.length : optEnd;      
     var source;
-    if(optStart > 0 || optEnd < this.__buffer__.length) {
-      source = this.__buffer__.subarray(optStart, optEnd);
+    if(optStart > 0 || optEnd < this.__bytes__.length) {
+      source = this.__bytes__.subarray(optStart, optEnd);
     } else {
-      source = this.__buffer__;
+      source = this.__bytes__;
     }
     return utf8ByteArrayToString(source);
   };
   Buffer.prototype.copy = function copy(targetBuffer, optTargetStart, optSourceStart, optSourceEnd) {
     optTargetStart = (undefined === optTargetStart) ? 0 : optTargetStart;
     optSourceStart = (undefined === optSourceStart) ? 0 : optSourceStart;
-    optSourceEnd = (undefined === optSourceEnd) ? this.__buffer__.length : optSourceEnd;
+    optSourceEnd = (undefined === optSourceEnd) ? this.__bytes__.length : optSourceEnd;
     var source;
-    if(optSourceStart > 0 || optSourceEnd < this.__buffer__.length) {
-      source = this.__buffer__.subarray(optSourceStart, optSourceEnd);
+    if(optSourceStart > 0 || optSourceEnd < this.__bytes__.length) {
+      source = this.__bytes__.subarray(optSourceStart, optSourceEnd);
     } else {
-      source = this.__buffer__;
+      source = this.__bytes__;
     }
-    targetBuffer.__buffer__.set(source, optTargetStart);
+    targetBuffer.__bytes__.set(source, optTargetStart);
   };
   Buffer.prototype.slice = function slice(optStart, optEnd) {
-    var bufferSlice = new Buffer();
-    bufferSlice.__buffer__ = this.__buffer__.subarray(optStart, optEnd);
+    var bufferSlice = new Buffer(this.__bytes__.subarray(optStart, optEnd));
     return bufferSlice;
   };
   Buffer.prototype.readUInt8 = function readUInt8(offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 1) {
+    if(!optNoAssert && offset > this.__bytes__.length - 1) {
       throw new BufferOverflowError();
     }
-    return this.__buffer__[offset];
+    return this.__bytes__[offset];
   };
   Buffer.prototype.writeUInt8 = function writeUInt8(value, offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 1) {
+    if(!optNoAssert && offset > this.__bytes__.length - 1) {
       throw new BufferOverflowError();
     }
-    this.__buffer__[offset] = value;
+    this.__bytes__[offset] = value;
   };
   Buffer.prototype.readUInt16BE = function readUInt16BE(offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 2) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
       throw new BufferOverflowError();
     }
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     return buffer[offset]<<8 | buffer[offset+1];
   };
   Buffer.prototype.readUInt16LE = function readUInt16LE(offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 2) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
       throw new BufferOverflowError();
     }
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     return buffer[offset+1]<<8 | buffer[offset];
   };
   Buffer.prototype.writeUInt16BE = function writeUInt16BE(value, offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 2) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
       throw new BufferOverflowError();
     }
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     buffer[offset] = value>>8 & 0xFF;
     buffer[offset+1] = value & 0xFF;
   };
   Buffer.prototype.writeUInt16LE = function writeUInt16LE(value, offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 2) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
       throw new BufferOverflowError();
     }
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     buffer[offset] = value & 0xFF;
     buffer[offset+1] = value>>8 & 0xFF;
   };
   Buffer.prototype.readUInt32BE = function readUInt32BE(offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 4) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
       throw new BufferOverflowError();
     }    
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     return buffer[offset]<<24 | buffer[offset+1]<<16 | buffer[offset+2]<<8 | buffer[offset+3];
   };
   Buffer.prototype.readUInt32LE = function readUInt32LE(offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 4) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
       throw new BufferOverflowError();
     }
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     return buffer[offset+3]<<24 | buffer[offset+2]<<16 | buffer[offset+1]<<8 | buffer[offset];
   };
   Buffer.prototype.writeUInt32BE = function writeUInt32BE(value, offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 4) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
       throw new BufferOverflowError();
     }
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     buffer[offset] = value>>24 & 0xFF;
     buffer[offset+1] = value>>16 & 0xFF;
     buffer[offset+2] = value>>8 & 0xFF;
     buffer[offset+3] = value & 0xFF;
   };
   Buffer.prototype.writeUInt32LE = function writeUInt32LE(value, offset, optNoAssert) {
-    if(!optNoAssert && offset > this.__buffer__.length - 4) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
       throw new BufferOverflowError();
     }
-    var buffer = this.__buffer__;
+    var buffer = this.__bytes__;
     buffer[offset] = value & 0xFF;
     buffer[offset+1] = value>>8 & 0xFF;
     buffer[offset+2] = value>>16 & 0xFF;
     buffer[offset+3] = value>>24 & 0xFF;
+  };
+  Buffer.prototype.readFloatBE = function readFloatBE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.getFloat32(offset, false);
+  };
+  Buffer.prototype.readFloatLE = function readFloatLE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.getFloat32(offset, true);
+  };
+  Buffer.prototype.writeFloatBE = function writeFloatBE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setFloat32(offset, value, false);
+  };
+  Buffer.prototype.writeFloatLE = function writeFloatLE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setFloat32(offset, value, true);
+  };
+  Buffer.prototype.readDoubleBE = function readDoubleBE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.getFloat64(offset, false);
+  };
+  Buffer.prototype.readDoubleLE = function readDoubleLE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.getFloat64(offset, true);
+  };
+  Buffer.prototype.writeDoubleBE = function writeDoubleBE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setFloat64(offset, value, false);
+  };
+  Buffer.prototype.writeDoubleLE = function writeDoubleLE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setFloat64(offset, value, true);
   };
 
 /*--------------------------------------------------------------------------*/
