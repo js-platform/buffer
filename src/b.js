@@ -102,11 +102,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     } else {
       // Do nothing!
     }
-    Object.defineProperty(this, "length", {
-      get: function() {
-        return this.__buffer__.length;
-      }
-    });
   }
   Buffer.isBuffer = function isBuffer(object) {
     return object instanceof Buffer;
@@ -116,7 +111,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     return window.unescape(encodeURIComponent(string)).length;
   };
   Buffer.concat = function concat(list, optTotalLength) {
-    console.log(list);
     var i, l;
     if(undefined === optTotalLength) {
       optTotalLength = 0;
