@@ -1,0 +1,17 @@
+{
+  "name": "bufferjs",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "jshint . && NODE_PATH=$NODE_PATH:. jasmine-node --test-dir tests && uglifyjs src/b.js > /dev/null"
+  },
+  "engines": {
+    "node": "0.8.x"
+  },
+  "dependencies": {
+    "jasmine-node": "~1.0.26",
+    "jshint": "~0.9.0",
+    "uglify-js": "~1.3.3",
+    "benchmark": "~1.0.0"
+  }
+}
