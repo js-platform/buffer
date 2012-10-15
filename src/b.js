@@ -12,12 +12,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 ;(function(window, undefined) {
-  'use strict';
-
-  // FIXME: Hack for Node.js
-  if(!window || !window.unescape) {
-    var unescape = require("querystring").unescape;
-  }
+  'use strict';  
 
   /** Detect free variable `exports` */
   var freeExports = (typeof exports == 'object') && exports &&
@@ -118,9 +113,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   };
   Buffer.byteLength = function byteLength(string, optEncoding) {
     // FIXME: support other encodings
-    return unescape(encodeURIComponent(string)).length;
+    return window.unescape(encodeURIComponent(string)).length;
   };
   Buffer.concat = function concat(list, optTotalLength) {
+    console.log(list);
     var i, l;
     if(undefined === optTotalLength) {
       optTotalLength = 0;
@@ -271,10 +267,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     });
   }
   // check for `exports` after `define` in case a build optimizer adds an `exports` object
-  else if (freeExports) {
+  else if (freeExports) {    
     // in Node.js or RingoJS v0.8.0+
     if (typeof module == 'object' && module && module.exports == freeExports) {
-      (module.exports = Buffer).B = Buffer;
+      // FIXME: Hack for Node.js
+      var unescape = require("querystring").unescape;
+      (module.exports = Buffer).Buffer = Buffer;
     }
     // in Narwhal or RingoJS v0.7.0-
     else {
