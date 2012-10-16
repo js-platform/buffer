@@ -8,7 +8,6 @@ var b2 = new Buffer(4);
 var value = 0xDEADBEEF;
 
 suite.add("BufferJS read", function() {
-  for(var i = 0; i < 1000; ++ i) {}
   b1.readUInt32BE(0);
 });
 
