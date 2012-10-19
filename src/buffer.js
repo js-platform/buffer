@@ -133,7 +133,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     return this.__bytes__.length;
   };
   Buffer.prototype.bytes = function bytes() {
-    return this.__bytes;
+    return this.__bytes__;
   };
   Buffer.prototype.write = function write(string, optOffset, optLength, optEncoding) {
     // FIXME: support other encodings
