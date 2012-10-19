@@ -1,5 +1,5 @@
 var Benchmark = require("benchmark");
-var B = require("src/b");
+var B = require("src/buffer");
 
 var suite = new Benchmark.Suite();
 

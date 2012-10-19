@@ -186,6 +186,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     }
     this.__dataview__.setUint8(offset, value);
   };
+  Buffer.prototype.writeInt8 = function writeInt8(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 1) {
+      throw new BufferOverflowError();
+    }
+    return this.__dataview__.setInt8(offset, value);
+  };
   Buffer.prototype.readUInt16BE = function readUInt16BE(offset, optNoAssert) {
     if(!optNoAssert && offset > this.__bytes__.length - 2) {
       throw new BufferOverflowError();
@@ -210,6 +216,30 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     }
     this.__dataview__.setUint16(offset, value, true);
   };
+  Buffer.prototype.readInt16BE = function readInt16BE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
+      throw new BufferOverflowError();
+    }
+    return this.__dataview__.getInt16(offset, false);
+  };
+  Buffer.prototype.readInt16LE = function readInt16LE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
+      throw new BufferOverflowError();
+    }
+    return this.__dataview__.getInt16(offset, true);
+  };
+  Buffer.prototype.writeInt16BE = function writeInt16BE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setInt16(offset, value, false);
+  };
+  Buffer.prototype.writeInt16LE = function writeInt16LE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 2) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setInt16(offset, value, true);
+  };
   Buffer.prototype.readUInt32BE = function readUInt32BE(offset, optNoAssert) {
     if(!optNoAssert && offset > this.__bytes__.length - 4) {
       throw new BufferOverflowError();
@@ -233,6 +263,31 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       throw new BufferOverflowError();
     }
     this.__dataview__.setUint32(offset, value, true);
+  };
+  //
+  Buffer.prototype.readInt32BE = function readInt32BE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }    
+    return this.__dataview__.getInt32(offset, false);
+  };
+  Buffer.prototype.readInt32LE = function readInt32LE(offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    return this.__dataview__.getInt32(offset, true);
+  };
+  Buffer.prototype.writeInt32BE = function writeInt32BE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setInt32(offset, value, false);
+  };
+  Buffer.prototype.writeInt32LE = function writeInt32LE(value, offset, optNoAssert) {
+    if(!optNoAssert && offset > this.__bytes__.length - 4) {
+      throw new BufferOverflowError();
+    }
+    this.__dataview__.setInt32(offset, value, true);
   };
   Buffer.prototype.readFloatBE = function readFloatBE(offset, optNoAssert) {
     if(!optNoAssert && offset > this.__bytes__.length - 4) {

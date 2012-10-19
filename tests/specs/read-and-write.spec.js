@@ -65,6 +65,36 @@ describe("read", function() {
         });
       });
     });
+    describe("signed", function() {
+      describe("big endian", function() {
+        it("should be defined", function() {
+          expect(this.buffer.readInt16BE).toBeDefined();
+        });
+        it("should read the correct signed 16-bit big endian value", function() {
+          expect(this.buffer.readInt16BE(1)).toEqual(-21058);
+        });
+        it("should assert when option is set and index is too large", function() {
+          expect(this.buffer.readInt16BE.bind(null, 9, true)).toThrow();
+        });
+        it("should assert when option is set and index is too small", function() {
+          expect(this.buffer.readInt16BE.bind(null, -1, true)).toThrow();
+        });
+      });
+      describe("little endian", function() {
+        it("should be defined", function() {
+          expect(this.buffer.readInt16LE).toBeDefined();
+        });
+        it("should read the correct signed 16-bit little endian value", function() {
+          expect(this.buffer.readInt16LE(2)).toEqual(-4162);
+        });
+        it("should assert when option is set and index is too large", function() {
+          expect(this.buffer.readInt16LE.bind(null, 9, true)).toThrow();
+        });
+        it("should assert when option is set and index is too small", function() {
+          expect(this.buffer.readInt16LE.bind(null, -1, true)).toThrow();
+        });
+      });
+    });
   });
   describe("32-bit", function() {
     describe("unsigned", function() {
@@ -82,19 +112,49 @@ describe("read", function() {
           expect(this.buffer.readUInt32BE.bind(null, -1, true)).toThrow();
         });
       });
+      describe("little endian", function() {
+        it("should be defined", function() {
+          expect(this.buffer.readUInt32LE).toBeDefined();
+        });
+        it("should read the correct unsigned 32-bit little endian value", function() {
+          expect(this.buffer.readUInt32LE(3)).toEqual(319533295);
+        });
+        it("should assert when option is set and index is too large", function() {
+          expect(this.buffer.readUInt32LE.bind(null, 9, true)).toThrow();
+        });
+        it("should assert when option is set and index is too small", function() {
+          expect(this.buffer.readUInt32LE.bind(null, -1, true)).toThrow();
+        });
+      });
     });
-    describe("little endian", function() {
-      it("should be defined", function() {
-        expect(this.buffer.readUInt32LE).toBeDefined();
+    describe("signed", function() {
+      describe("big endian", function() {
+        it("should be defined", function() {
+          expect(this.buffer.readInt32BE).toBeDefined();
+        });
+        it("should read the correct unsigned 32-bit big endian value", function() {
+          expect(this.buffer.readInt32BE(0)).toEqual(-559038737);
+        });
+        it("should assert when option is set and index is too large", function() {
+          expect(this.buffer.readInt32BE.bind(null, 9, true)).toThrow();
+        });
+        it("should assert when option is set and index is too small", function() {
+          expect(this.buffer.readInt32BE.bind(null, -1, true)).toThrow();
+        });
       });
-      it("should read the correct unsigned 32-bit little endian value", function() {
-        expect(this.buffer.readUInt32LE(3)).toEqual(319533295);
-      });
-      it("should assert when option is set and index is too large", function() {
-        expect(this.buffer.readUInt32LE.bind(null, 9, true)).toThrow();
-      });
-      it("should assert when option is set and index is too small", function() {
-        expect(this.buffer.readUInt32LE.bind(null, -1, true)).toThrow();
+      describe("little endian", function() {
+        it("should be defined", function() {
+          expect(this.buffer.readInt32LE).toBeDefined();
+        });
+        it("should read the correct unsigned 32-bit little endian value", function() {
+          expect(this.buffer.readInt32LE(3)).toEqual(319533295);
+        });
+        it("should assert when option is set and index is too large", function() {
+          expect(this.buffer.readInt32LE.bind(null, 9, true)).toThrow();
+        });
+        it("should assert when option is set and index is too small", function() {
+          expect(this.buffer.readInt32LE.bind(null, -1, true)).toThrow();
+        });
       });
     });
   });
@@ -166,6 +226,18 @@ describe("write", function() {
   describe("8-bit", function() {
     describe("unsigned", function() {
       it("should write the correct unsigned 8-bit value", function() {
+        this.buffer.writeUInt8(0xde, 1);
+        expect(this.buffer.__bytes__).toBeLike([0x0, 0xde, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
+      });
+      it("should assert when option is set and index is too large", function() {
+        expect(this.buffer.writeUInt8.bind(null, 0x1, 9)).toThrow();
+      });
+      it("should assert when option is set and index is too small", function() {
+        expect(this.buffer.writeUInt8.bind(null, 0x1, -1)).toThrow();
+      });
+    });
+    describe("signed", function() {
+      it("should write the correct signed 8-bit value", function() {
         this.buffer.writeUInt8(0xde, 1);
         expect(this.buffer.__bytes__).toBeLike([0x0, 0xde, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
       });
