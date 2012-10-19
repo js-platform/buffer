@@ -108,6 +108,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   Buffer.isBuffer = function isBuffer(object) {
     return object instanceof Buffer;
   };
+  Buffer.isSupportedEncoding = function isSupportedEncoding(encoding) {
+    if("utf-8" === encoding) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   Buffer.byteLength = function byteLength(string, optEncoding) {
     // FIXME: support other encodings
     return window.unescape(encodeURIComponent(string)).length;
