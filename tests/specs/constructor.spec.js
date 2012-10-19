@@ -1,4 +1,4 @@
-var B = require("src/b");
+var B = require("src/buffer");
 
 describe("Buffer", function() {
   describe("from array", function() {

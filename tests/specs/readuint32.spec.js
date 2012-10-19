@@ -1,4 +1,4 @@
-var B = require("src/b");
+var B = require("src/buffer");
 
 describe("readUInt32", function() {
   describe("BE", function() {
