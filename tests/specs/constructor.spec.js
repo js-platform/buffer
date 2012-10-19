@@ -9,8 +9,8 @@ describe("Buffer", function() {
     it("should create a new buffer", function() {
       expect(b).toBeDefined();
     });
-    it("should be the same as a Node buffer", function() {
-      expect(b.__bytes__).toBeLike(new Buffer([1, 2, 3, 4]));
+    it("should have the array elements", function() {
+      expect(b.__bytes__).toBeLike([1, 2, 3, 4]);
     });
   });
   describe("from typed array", function() {
@@ -21,8 +21,8 @@ describe("Buffer", function() {
     it("should create a new buffer", function() {
       expect(b).toBeDefined();
     });
-    it("should be the same as a Node buffer", function() {
-      expect(b.__bytes__).toBeLike(new Buffer(new Uint8Array([1, 2, 3, 4])));
+    it("should have the typed array elements", function() {
+      expect(b.__bytes__).toBeLike([1, 2, 3, 4]);
     });
   });
   describe("from string", function() {
@@ -33,8 +33,8 @@ describe("Buffer", function() {
     it("should create a new buffer", function() {
       expect(b).toBeDefined();
     });
-    it("should be the same as a Node buffer", function() {
-      expect(b.__bytes__).toBeLike(new Buffer("Hello world!"));
+    it("should contain the initialization string", function() {
+      expect(b.toString()).toBeLike("Hello world!");
     });
   });
   describe("from initial size", function() {
@@ -45,10 +45,8 @@ describe("Buffer", function() {
     it("should create a new buffer", function() {
       expect(b).toBeDefined();
     });
-    it("should be the same as a Node buffer", function() {
-      var nodeBuffer = new Buffer(4);
-      nodeBuffer.fill(0);
-      expect(b.__bytes__).toBeLike(nodeBuffer);
+    it("should be initially zero-filled", function() {
+      expect(b.__bytes__).toBeLike([0, 0, 0, 0]);
     });
   });
 });
