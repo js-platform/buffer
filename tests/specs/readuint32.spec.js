@@ -1,14 +1,13 @@
 var B = require("src/buffer");
 
 describe("readUInt32", function() {
-  describe("BE", function() {
-    it("should be the same as a Node buffer", function() {      
-      expect(new B([1, 2, 3, 4]).readUInt32BE(0)).toBeLike(new Buffer([1, 2, 3, 4]).readUInt32BE(0));
-    });
+  beforeEach(function() {
+    this.buffer = new B([1, 2, 3, 4]);
   });
-  describe("LE", function() {
-    it("should be the same as a Node buffer", function() {      
-      expect(new B([1, 2, 3, 4]).readUInt32LE(0)).toBeLike(new Buffer([1, 2, 3, 4]).readUInt32LE(0));
-    });
+  it("should read the correct BE value", function() {
+    expect(this.buffer.readUInt32BE(0)).toEqual(16909060);
+  });
+  it("should read the correct LE value", function() {
+    expect(this.buffer.readUInt32LE(0)).toEqual(67305985);
   });
 });
