@@ -4,6 +4,9 @@ describe("slice", function() {
   beforeEach(function() {
     this.buffer = new B([1, 2, 3, 4]);    
   });
+  it("should have slice defined", function() {
+    expect(this.buffer.slice).toBeDefined();
+  });
   describe("with no arguments", function() {
     it("should be the same size as the original", function() {
       expect(this.buffer.slice().length()).toEqual(this.buffer.length());

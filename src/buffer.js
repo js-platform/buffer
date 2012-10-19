@@ -104,6 +104,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     }
     this.__dataview__ = new DataView(this.__bytes__.buffer);
   }
+  Buffer.BufferOverflowError = BufferOverflowError;
   Buffer.isBuffer = function isBuffer(object) {
     return object instanceof Buffer;
   };
