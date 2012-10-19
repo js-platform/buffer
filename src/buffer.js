@@ -165,8 +165,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     targetBuffer.__bytes__.set(source, optTargetStart);
   };
   Buffer.prototype.slice = function slice(optStart, optEnd) {
-    var bufferSlice = new Buffer(this.__bytes__.subarray(optStart, optEnd));
-    return bufferSlice;
+    optStart = (undefined === optStart) ? 0 : optStart;
+    optEnd = (undefined === optEnd) ? this.__bytes__.length : optEnd;
+    var buffer = new Buffer(this.__bytes__.buffer);
+    buffer.__bytes__ = buffer.__bytes__.subarray(optStart, optEnd);
+    return buffer;
   };
   Buffer.prototype.readUInt8 = function readUInt8(offset, optNoAssert) {
     if(!optNoAssert && offset > this.__bytes__.length - 1) {
