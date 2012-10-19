@@ -14,15 +14,35 @@ describe("Buffer", function() {
     });
   });
   describe("from typed array", function() {
-    var b;
+    var b, i; 
     beforeEach(function() {
-      b = new B(new Uint8Array([1, 2, 3, 4]));
+      i = new Uint8Array([1, 2, 3, 4]);
+      b = new B(i);      
     });
     it("should create a new buffer", function() {
       expect(b).toBeDefined();
     });
     it("should have the typed array elements", function() {
       expect(b.__bytes__).toBeLike([1, 2, 3, 4]);
+    });
+    it("should be backed by a new array buffer", function() {
+      expect(b.__bytes__.buffer).not.toBe(i.buffer);
+    });
+  });
+  describe("from array buffer", function() {
+    var b, i;
+    beforeEach(function() {      
+      i = new Uint8Array([1, 2, 3, 4]);
+      b = new B(i.buffer);
+    });
+    it("should create a new buffer", function() {
+      expect(b).toBeDefined();
+    });
+    it("should have the typed array elements", function() {
+      expect(b.__bytes__).toBeLike([1, 2, 3, 4]);
+    });
+    it("should be backed by a new array buffer", function() {
+      expect(b.__bytes__.buffer).toBe(i.buffer);
     });
   });
   describe("from string", function() {
