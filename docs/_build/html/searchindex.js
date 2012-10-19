@@ -1,0 +1,1 @@
+Search.setIndex({objects:{},terms:{mathj:0,search:0,engin:0,index:0,support:0,javascript:0,arrai:0,geometri:0,librari:0,need:0,you:0,document:0,type:0,page:0,math:0},objtypes:{},titles:["MathJS documentation!"],objnames:{},filenames:["index"]})

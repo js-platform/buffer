@@ -3,7 +3,7 @@ var fs = require("fs");
 module.exports = function() {
   var cmds = [
               "cd docs && make html",
-              "uglifyjs --output dist/b.min.js src/b.js"
+              "uglifyjs --output dist/buffer.min.js src/buffer.js"
               ];
   var callback = function() {
   };
@@ -16,8 +16,8 @@ module.exports = function() {
   if(!fs.existsSync("dist")) {
     fs.mkdirSync("dist");
   }
-  if(fs.existsSync("dist/b.min.js")) {
-    fs.unlinkSync("dist/b.min.js");
+  if(fs.existsSync("dist/buffer.min.js")) {
+    fs.unlinkSync("dist/buffer.min.js");
   }
   jake.exec( cmds, callback, opts );
 };
